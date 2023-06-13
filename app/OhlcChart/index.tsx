@@ -89,7 +89,7 @@ export const OhlcChart = () => {
           final.push(mappedArr);
         });
         setSeries([...final]);
-        handleTimeFrame(epochTime[timeFrame].timeFrame);
+        handleTimeFrame(epochTime[time].timeFrame);
       }
     } catch (error) {
       console.log("error: ", error);
@@ -102,7 +102,6 @@ export const OhlcChart = () => {
       let data: [] | any = eventData ?? eventData;
       data = data[constant.DATA];
       if (data.length === 6) {
-        console.log("data: ", data.length);
         timeStamp = data[constant.MTS];
         mappedArr = [];
         mappedArr.push(timeStamp);
