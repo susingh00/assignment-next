@@ -1,13 +1,4 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  async rewrites() {
-    return [
-      {
-        source: "/v2/:path*",
-        destination: "https://api-pub.bitfinex.com/:path*",
-      },
-    ];
-  },
-};
+const nextConfig = {};
 
 module.exports = nextConfig;

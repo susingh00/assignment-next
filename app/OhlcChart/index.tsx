@@ -15,7 +15,6 @@ export const OhlcChart = () => {
     onOpen: () => console.log("opened"),
     shouldReconnect: () => true,
     onMessage: (_msg) => {
-      console.log("_msg: ", _msg.data);
       ohlcParser();
     },
   });
@@ -100,8 +99,10 @@ export const OhlcChart = () => {
     if (ws.lastJsonMessage?.length) {
       let timeStamp, mappedArr: seriesType;
       let eventData = ws.lastJsonMessage;
-      const data: [] | any = eventData ?? eventData[constant.DATA];
+      let data: [] | any = eventData ?? eventData;
+      data = data[constant.DATA];
       if (data.length === 6) {
+        console.log("data: ", data.length);
         timeStamp = data[constant.MTS];
         mappedArr = [];
         mappedArr.push(timeStamp);
