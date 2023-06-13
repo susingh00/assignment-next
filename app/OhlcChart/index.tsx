@@ -15,6 +15,7 @@ export const OhlcChart = () => {
     onOpen: () => console.log("opened"),
     shouldReconnect: () => true,
     onMessage: (_msg) => {
+      console.log("_msg: ", _msg.data);
       ohlcParser();
     },
   });
