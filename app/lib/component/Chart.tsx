@@ -1,6 +1,10 @@
-import ReactApexChart from "react-apexcharts";
+import dynamic from "next/dynamic";
 import { ChartType } from "../utils/types/Chart.type";
 import { ohlc } from "../utils/constant";
+const ReactApexChart = dynamic(() => import("react-apexcharts"), {
+  ssr: false,
+});
+// import ReactApexChart from "react-apexcharts";
 export const Chart = (props: ChartType) => {
   return (
     <div style={{ height: "80vh" }}>
