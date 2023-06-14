@@ -102,7 +102,6 @@ export const OhlcChart = () => {
       let eventData = ws.lastJsonMessage;
       let data: [] | any = eventData ?? eventData;
       data = data[constant.DATA];
-      console.log("data: ", data);
       if (data.length === 6) {
         timeStamp = data[constant.MTS];
         mappedArr = [];

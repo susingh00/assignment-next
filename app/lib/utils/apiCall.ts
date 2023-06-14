@@ -9,9 +9,6 @@ export const apiCall = async (
     method,
     url: baseURL + endpoint,
     data: params,
-    // headers: {
-    //   "Access-Control-Allow-Origin": "*",
-    // },
   });
   return res;
 };
