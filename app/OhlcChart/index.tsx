@@ -8,6 +8,7 @@ import { apiCall } from "../lib/utils/apiCall";
 import { endpoint } from "../lib/utils/endPoints";
 import { seriesType } from "../lib/utils/types/OHLC.type";
 import { chartParser, getTimeFrame } from "../lib/utils/ohlcParser";
+import { Loader } from "../lib/component/Loader";
 export const OhlcChart = () => {
   const [series, setSeries] = useState<number[]>([]);
   const [timeFrame, setTimeFrame] = useState("1h");
@@ -76,5 +77,7 @@ export const OhlcChart = () => {
   };
   return series.length ? (
     <OHLC series={series} fecthCandle={fecthCandle} timeFrame={timeFrame} />
-  ) : null;
+  ) : (
+    <Loader />
+  );
 };

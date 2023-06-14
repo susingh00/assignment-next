@@ -6,6 +6,7 @@ import { socket_url } from "../lib/utils/socket";
 import { orderBook } from "../lib/utils/constant";
 import { BookOrderType } from "../lib/utils/types/BookOrder.types";
 import { orderBookParser } from "../lib/utils/orderBookParser";
+import { Loader } from "../lib/component/Loader";
 
 const BookOrder = () => {
   const [bids, setBids] = useState<Array<BookOrderType>>([]);
@@ -37,6 +38,6 @@ const BookOrder = () => {
     });
   }, []);
 
-  return <Order bids={bids} asks={asks} />;
+  return bids.length ? <Order bids={bids} asks={asks} /> : <Loader />;
 };
 export default BookOrder;
