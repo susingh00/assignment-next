@@ -7,7 +7,7 @@ import moment from "moment";
 import { apiCall } from "../lib/utils/apiCall";
 import { endpoint } from "../lib/utils/endPoints";
 import { seriesType } from "../lib/utils/types/OHLC.type";
-import { subtractTimeType } from "../lib/utils/types/constant.type";
+import { chartParser, getTimeFrame } from "../lib/utils/ohlcParser";
 export const OhlcChart = () => {
   const [series, setSeries] = useState<number[]>([]);
   const [timeFrame, setTimeFrame] = useState("1h");
@@ -24,43 +24,8 @@ export const OhlcChart = () => {
   }, []);
   const fecthCandle = async (time: string) => {
     try {
-      let subtractTime: subtractTimeType = { num: 1, time: "hour" };
       setTimeFrame(time);
-      switch (time) {
-        case "6h":
-          subtractTime.num = 6;
-          break;
-        case "1d":
-          subtractTime.num = 1;
-          subtractTime.time = "day";
-          break;
-        case "3d":
-          subtractTime.num = 3;
-          subtractTime.time = "day";
-          break;
-        case "7d":
-          subtractTime.num = 7;
-          subtractTime.time = "day";
-          break;
-        case "1m":
-          subtractTime.num = 1;
-          subtractTime.time = "month";
-          break;
-        case "3m":
-          subtractTime.num = 3;
-          subtractTime.time = "month";
-          break;
-        case "1y":
-          subtractTime.num = 1;
-          subtractTime.time = "year";
-          break;
-        case "3y":
-          subtractTime.num = 3;
-          subtractTime.time = "year";
-          break;
-        default:
-          break;
-      }
+      const subtractTime = getTimeFrame(time);
       const startTime = moment()
         .utc()
         .subtract(subtractTime.num, subtractTime.time)
@@ -77,20 +42,10 @@ export const OhlcChart = () => {
           final: number[] = [];
         res.data.map((item: number[]) => {
           timeStamp = item[constant.MTS];
-          mappedArr = [];
-          mappedArr.push(timeStamp);
-          let value = item.slice(1, 5);
-          const high = value[constant.HIGH];
-          const low = value[constant.LOW];
-          const close = value[constant.CLOSE];
-          value[constant.CLOSE] = high;
-          value[constant.HIGH] = low;
-          value[constant.LOW] = close;
-          mappedArr.push(value);
-          final.push(mappedArr);
+          const mappedData = chartParser(item, timeStamp);
+          final.push(mappedData);
         });
         setSeries([...final]);
-        // handleTimeFrame(epochTime[time].timeFrame);
       }
     } catch (error) {
       console.log("error: ", error);
@@ -98,23 +53,14 @@ export const OhlcChart = () => {
   };
   const ohlcParser = () => {
     if (ws.lastJsonMessage?.length) {
-      let timeStamp, mappedArr: seriesType;
+      let timeStamp: number, mappedArr: seriesType;
       let eventData = ws.lastJsonMessage;
       let data: [] | any = eventData ?? eventData;
       data = data[constant.DATA];
       if (data.length === 6) {
         timeStamp = data[constant.MTS];
-        mappedArr = [];
-        mappedArr.push(timeStamp);
-        let value = data.slice(1, 5);
-        const high = value[constant.HIGH];
-        const low = value[constant.LOW];
-        const close = value[constant.CLOSE];
-        value[constant.CLOSE] = high;
-        value[constant.HIGH] = low;
-        value[constant.LOW] = close;
-        mappedArr.push(value);
-        setSeries((prev) => [...prev, mappedArr]);
+        const mappedData = chartParser(data, timeStamp);
+        setSeries((prev) => [...prev, mappedData]);
       }
     }
   };
