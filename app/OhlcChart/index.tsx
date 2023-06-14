@@ -20,6 +20,7 @@ export const OhlcChart = () => {
   });
   useEffect(() => {
     fecthCandle("1h");
+    handleTimeFrame("");
   }, []);
   const fecthCandle = async (time: string) => {
     try {
@@ -89,7 +90,7 @@ export const OhlcChart = () => {
           final.push(mappedArr);
         });
         setSeries([...final]);
-        handleTimeFrame(epochTime[time].timeFrame);
+        // handleTimeFrame(epochTime[time].timeFrame);
       }
     } catch (error) {
       console.log("error: ", error);
@@ -101,6 +102,7 @@ export const OhlcChart = () => {
       let eventData = ws.lastJsonMessage;
       let data: [] | any = eventData ?? eventData;
       data = data[constant.DATA];
+      console.log("data: ", data);
       if (data.length === 6) {
         timeStamp = data[constant.MTS];
         mappedArr = [];
@@ -122,7 +124,8 @@ export const OhlcChart = () => {
     let msg = {
       event: "subscribe",
       channel: "candles",
-      key: `trade:${time}:tBTCUSD`,
+      // key: `trade:${time}:tBTCUSD`,
+      key: `trade:1m:tBTCUSD`,
     };
     ws.sendJsonMessage(msg);
   };
