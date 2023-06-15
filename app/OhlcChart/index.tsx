@@ -33,13 +33,11 @@ export const OhlcChart = () => {
         .valueOf();
 
       const endTime = moment().utc().valueOf();
-      const limit = epochTime[time].limit;
-      const tradeTime = epochTime[time].timeFrame;
-      const path = `${endpoint.candles}:${tradeTime}:tBTCUSD/hist?start=${startTime}&end=${endTime}&limit=${limit}`;
+      const { limit, timeFrame: tradeTime } = epochTime[time];
+      const path = `${endpoint.candles}:${tradeTime}:tBTCUSD/hist?start=${startTime}&end=${endTime}`;
       const res = await apiCall("GET", path);
       if (res.status === 200) {
         let timeStamp: number,
-          mappedArr: seriesType,
           final: number[] = [];
         res.data.map((item: number[]) => {
           timeStamp = item[constant.MTS];
@@ -53,8 +51,8 @@ export const OhlcChart = () => {
     }
   };
   const ohlcParser = () => {
-    if (ws.lastJsonMessage?.length) {
-      let timeStamp: number, mappedArr: seriesType;
+    if (ws.lastJsonMessage?.length && timeFrame === "1h") {
+      let timeStamp: number;
       let eventData = ws.lastJsonMessage;
       let data: [] | any = eventData ?? eventData;
       data = data[constant.DATA];

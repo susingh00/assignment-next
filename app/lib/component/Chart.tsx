@@ -94,5 +94,16 @@ Chart.defaultProps = {
         },
       },
     },
+    plotOptions: {
+      candlestick: {
+        colors: {
+          upward: "#01a781",
+          downward: "#f53f47",
+        },
+        wick: {
+          useFillColor: true,
+        },
+      },
+    },
   },
 };
