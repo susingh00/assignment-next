@@ -3,12 +3,12 @@ import { Chart } from "../../lib/component/Chart";
 import moment from "moment";
 import { routes } from "../../lib/utils/routes";
 import { epochTime, series } from "../../lib/utils/constant";
-import { OHLCType } from "../../lib/utils/types/OHLC.type";
+import { OHLCType, fecthCandle } from "../../lib/utils/types/OHLC.type";
 import Link from "next/link";
 import Tools from "@/app/lib/component/Tools";
 
 export function OHLC(props: OHLCType) {
-  const [currentPrice, setcurrentPrice] = useState(
+  const [currentPrice, setcurrentPrice] = useState<Array<number>>(
     props.series[props.series.length - 1][series.DATA]
   );
   useEffect(() => {
@@ -16,18 +16,7 @@ export function OHLC(props: OHLCType) {
   }, [props.series]);
   return (
     <div>
-      <div className="flex justify-between p-2 border-gray-400 border-b-2">
-        <h3>
-          CHART <span className="text-gray-400">BTC/USD</span>
-        </h3>
-        <div className="flex items-center">
-          <p className="text-gray-400 text-sm">SHOW LIQUIDATIONS</p>
-          <i className="fa-solid fa-arrows-rotate text-gray-200 ms-2 text-sm"></i>
-          <Link className="mx-2 border-2 px-2 rounded" href={routes.orderBook}>
-            Book Order&apos;s
-          </Link>
-        </div>
-      </div>
+      <Header />
       <div className="p-2">
         <div className="flex justify-between px-2">
           <div>
@@ -57,27 +46,7 @@ export function OHLC(props: OHLCType) {
                 <p className="text-sm  text-gray-400">Indicators</p>{" "}
               </button>
             </div>
-            <div>
-              <h5>
-                BTC/USD 30 Bitfinex{" "}
-                <span className="text-gray-400 mx-1">O</span>
-                <span className="text-green-600" id="price-action">
-                  {currentPrice[series.OPEN]}
-                </span>
-                <span className="text-gray-400 mx-1">H</span>
-                <span className="text-green-600" id="price-action">
-                  {currentPrice[series.HIGH]}
-                </span>
-                <span className="text-gray-400 mx-1">L</span>
-                <span className="text-green-600" id="price-action">
-                  {currentPrice[series.LOW]}
-                </span>
-                <span className="text-gray-400 mx-1">C</span>
-                <span className="text-green-600" id="price-action">
-                  {currentPrice[series.CLOSE]}
-                </span>
-              </h5>
-            </div>
+            <PriceAction currentPrice={currentPrice} />
           </div>
         </div>
         <div className="flex">
@@ -93,42 +62,104 @@ export function OHLC(props: OHLCType) {
           </div>
           <div style={{ flex: "0.95" }}>
             <Chart series={props.series} />
-            <div className="flex justify-between items-center">
-              <div>
-                {Object.keys(epochTime).map((time, index) => (
-                  <button
-                    className="p-2"
-                    onClick={() => props.fecthCandle(time)}
-                    key={index}
-                  >
-                    <p
-                      className={`text-sm ${
-                        props.timeFrame === time
-                          ? "text-white"
-                          : "text-gray-400"
-                      }`}
-                    >
-                      {time}
-                    </p>
-                  </button>
-                ))}
-              </div>
-              <div className="flex">
-                <p className="text-sm text-gray-400">
-                  {moment().utc().format("hh:mm:ss (UTC)")}
-                </p>
-                <div
-                  className="text-gray-400 mx-2"
-                  style={{ borderLeft: " solid 0.5px", height: "20px" }}
-                />
-                <p className="text-sm text-gray-400">%</p>
-                <p className="text-sm text-gray-400 mx-2">log</p>
-                <p className="text-sm">auto</p>
-              </div>
-            </div>
+
+            <Footer
+              fecthCandle={props.fecthCandle}
+              timeFrame={props.timeFrame}
+            />
           </div>
         </div>
       </div>
     </div>
   );
 }
+const PriceAction = ({ currentPrice }: { currentPrice: number[] }) => {
+  return (
+    <div>
+      <h5>
+        BTC/USD 30 Bitfinex <span className="text-gray-400 mx-1">O</span>
+        <span className="text-green-600" id="price-action">
+          {currentPrice[series.OPEN]}
+        </span>
+        <span className="text-gray-400 mx-1">H</span>
+        <span className="text-green-600" id="price-action">
+          {currentPrice[series.HIGH]}
+        </span>
+        <span className="text-gray-400 mx-1">L</span>
+        <span className="text-green-600" id="price-action">
+          {currentPrice[series.LOW]}
+        </span>
+        <span className="text-gray-400 mx-1">C</span>
+        <span className="text-green-600" id="price-action">
+          {currentPrice[series.CLOSE]}
+        </span>
+      </h5>
+    </div>
+  );
+};
+const TimeRange = ({
+  fecthCandle,
+  timeFrame,
+}: {
+  fecthCandle: fecthCandle;
+  timeFrame: string;
+}) => {
+  return (
+    <div>
+      {Object.keys(epochTime).map((time, index) => (
+        <button className="p-2" onClick={() => fecthCandle(time)} key={index}>
+          <p
+            className={`text-sm ${
+              timeFrame === time ? "text-white" : "text-gray-400"
+            }`}
+          >
+            {time}
+          </p>
+        </button>
+      ))}
+    </div>
+  );
+};
+const Footer = ({
+  fecthCandle,
+  timeFrame,
+}: {
+  fecthCandle: fecthCandle;
+  timeFrame: string;
+}) => {
+  return (
+    <div className="flex justify-between items-center flex-wrap">
+      <TimeRange fecthCandle={fecthCandle} timeFrame={timeFrame} />
+      <div className="flex">
+        <p className="text-sm text-gray-400">
+          {moment().utc().format("hh:mm:ss (UTC)")}
+        </p>
+        <div
+          className="text-gray-400 mx-2"
+          style={{ borderLeft: " solid 0.5px", height: "20px" }}
+        />
+        <p className="text-sm text-gray-400">%</p>
+        <p className="text-sm text-gray-400 mx-2">log</p>
+        <p className="text-sm">auto</p>
+      </div>
+    </div>
+  );
+};
+const Header = () => {
+  return (
+    <div className="flex justify-between p-2 border-gray-400 border-b-2">
+      <h3>
+        CHART <span className="text-gray-400">BTC/USD</span>
+      </h3>
+      <div className="flex items-center">
+        <p className="max-[500px]:hidden text-gray-400 text-sm">
+          SHOW LIQUIDATIONS
+        </p>
+        <i className="fa-solid fa-arrows-rotate text-gray-200 ms-2 text-sm"></i>
+        <Link className="mx-2 border-2 px-2 rounded" href={routes.orderBook}>
+          Book Order&apos;s
+        </Link>
+      </div>
+    </div>
+  );
+};
