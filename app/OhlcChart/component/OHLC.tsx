@@ -6,6 +6,7 @@ import { epochTime, series } from "../../lib/utils/constant";
 import { OHLCType, fecthCandle } from "../../lib/utils/types/OHLC.type";
 import Link from "next/link";
 import Tools from "@/app/lib/component/Tools";
+import { CandlePrice } from "@/app/lib/component/CandlePrice";
 
 export function OHLC(props: OHLCType) {
   const [currentPrice, setcurrentPrice] = useState<Array<number>>(
@@ -18,36 +19,34 @@ export function OHLC(props: OHLCType) {
     <div>
       <Header />
       <div className="p-2">
-        <div className="flex justify-between px-2">
-          <div>
-            <div className="flex">
-              <button className="p-2">
-                <p className="text-sm text-gray-400">
-                  {epochTime[props.timeFrame].timeFrame}
-                </p>
-              </button>
-              <button className="p-2">
-                <span className="text-sm text-gray-400">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 28 28"
-                    width="28"
-                    height="28"
-                    fill="currentColor"
-                  >
-                    <path d="M17 11v6h3v-6h-3zm-.5-1h4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5z"></path>
-                    <path d="M18 7h1v3.5h-1zm0 10.5h1V21h-1z"></path>
-                    <path d="M9 8v12h3V8H9zm-.5-1h4a.5.5 0 0 1 .5.5v13a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 .5-.5z"></path>
-                    <path d="M10 4h1v3.5h-1zm0 16.5h1V24h-1z"></path>
-                  </svg>
-                </span>
-              </button>
-              <button className="p-2">
-                <p className="text-sm  text-gray-400">Indicators</p>{" "}
-              </button>
-            </div>
-            <PriceAction currentPrice={currentPrice} />
+        <div className="px-2">
+          <div className="flex">
+            <button className="p-2">
+              <p className="text-sm text-gray-400">
+                {epochTime[props.timeFrame].timeFrame}
+              </p>
+            </button>
+            <button className="p-2">
+              <span className="text-sm text-gray-400">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 28 28"
+                  width="28"
+                  height="28"
+                  fill="currentColor"
+                >
+                  <path d="M17 11v6h3v-6h-3zm-.5-1h4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5z"></path>
+                  <path d="M18 7h1v3.5h-1zm0 10.5h1V21h-1z"></path>
+                  <path d="M9 8v12h3V8H9zm-.5-1h4a.5.5 0 0 1 .5.5v13a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 .5-.5z"></path>
+                  <path d="M10 4h1v3.5h-1zm0 16.5h1V24h-1z"></path>
+                </svg>
+              </span>
+            </button>
+            <button className="p-2">
+              <p className="text-sm  text-gray-400">Indicators</p>{" "}
+            </button>
           </div>
+          <PriceAction currentPrice={currentPrice} />
         </div>
         <div className="flex">
           <div
@@ -77,22 +76,11 @@ const PriceAction = ({ currentPrice }: { currentPrice: number[] }) => {
   return (
     <div>
       <h5>
-        BTC/USD 30 Bitfinex <span className="text-gray-400 mx-1">O</span>
-        <span className="text-green-600" id="price-action">
-          {currentPrice[series.OPEN]}
-        </span>
-        <span className="text-gray-400 mx-1">H</span>
-        <span className="text-green-600" id="price-action">
-          {currentPrice[series.HIGH]}
-        </span>
-        <span className="text-gray-400 mx-1">L</span>
-        <span className="text-green-600" id="price-action">
-          {currentPrice[series.LOW]}
-        </span>
-        <span className="text-gray-400 mx-1">C</span>
-        <span className="text-green-600" id="price-action">
-          {currentPrice[series.CLOSE]}
-        </span>
+        BTC/USD 30 Bitfinex
+        <CandlePrice label={"O"} currentPrice={currentPrice[series.OPEN]} />
+        <CandlePrice label={"H"} currentPrice={currentPrice[series.HIGH]} />
+        <CandlePrice label={"L"} currentPrice={currentPrice[series.LOW]} />
+        <CandlePrice label={"C"} currentPrice={currentPrice[series.CLOSE]} />
       </h5>
     </div>
   );
@@ -152,6 +140,7 @@ const Header = () => {
         CHART <span className="text-gray-400">BTC/USD</span>
       </h3>
       <div className="flex items-center">
+        <input type="checkbox" className="mr-2" checked={true} />
         <p className="max-[500px]:hidden text-gray-400 text-sm">
           SHOW LIQUIDATIONS
         </p>
