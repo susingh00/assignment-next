@@ -1,5 +1,3 @@
-import Link from "next/link";
-import { routes } from "../../lib/utils/routes";
 import {
   BookOrderPropsType,
   BookOrderType,
@@ -15,10 +13,10 @@ export const Order = (props: BookOrderPropsType) => {
       <div className="flex justify-center text-center p-10">
         <div className="w-3/6">
           <div className="flex justify-evenly">
-            <p className="text-gray-400 w-2">COUNT</p>
-            <p className="text-gray-400 w-2">AMOUNT</p>
-            <p className="text-gray-400 w-2">TOTAL</p>
-            <p className="text-gray-400 w-2">PRICE</p>
+            <Label className="text-gray-400" label="COUNT" />
+            <Label className="text-gray-400" label="AMOUNT" />
+            <Label className="text-gray-400" label="TOTAL" />
+            <Label className="text-gray-400" label="PRICE" />
           </div>
           {props.bids.map((bid: BookOrderType, index: number) => (
             <div
@@ -30,19 +28,19 @@ export const Order = (props: BookOrderPropsType) => {
                 className="green-box"
                 style={{ width: (Number(bid.total) * 10) / 3 + "%" }}
               ></div>
-              <p className="w-2">{bid.count}</p>
-              <p className="w-2">{bid.amount}</p>
-              <p className="w-2">{Number(bid.total).toFixed(4)}</p>
-              <p className="w-2">{bid.price.toLocaleString()}</p>
+              <Label label={bid.count} />
+              <Label label={bid.amount} />
+              <Label label={Number(bid.total).toFixed(4)} />
+              <Label label={bid.price.toLocaleString()} />
             </div>
           ))}
         </div>
         <div className="w-3/6">
           <div className="flex justify-evenly">
-            <p className="text-gray-400 w-2">PRICE</p>
-            <p className="text-gray-400 w-2">TOTAL</p>
-            <p className="text-gray-400 w-2">AMOUNT</p>
-            <p className="text-gray-400 w-2">COUNT</p>
+            <Label className="text-gray-400" label="PRICE" />
+            <Label className="text-gray-400" label="TOTAL" />
+            <Label className="text-gray-400" label="AMOUNT" />
+            <Label className="text-gray-400" label="COUNT" />
           </div>
           {props.asks.map((ask: BookOrderType, index: number) => (
             <div
@@ -54,10 +52,10 @@ export const Order = (props: BookOrderPropsType) => {
                 className="red-box"
                 style={{ width: (Number(ask.total) * 10) / 3 + "%" }}
               ></div>
-              <p className="w-2">{ask.price.toLocaleString()}</p>
-              <p className="w-2">{Number(ask.total).toFixed(4)}</p>
-              <p className="w-2">{ask.amount}</p>
-              <p className="w-2">{ask.count}</p>
+              <Label label={ask.price.toLocaleString()} />
+              <Label label={Number(ask.total).toFixed(4)} />
+              <Label label={ask.amount} />
+              <Label label={ask.count} />
             </div>
           ))}
         </div>
@@ -66,4 +64,16 @@ export const Order = (props: BookOrderPropsType) => {
       <Footer />
     </div>
   );
+};
+const Label = ({
+  label,
+  className,
+}: {
+  label: string | number;
+  className: string;
+}) => {
+  return <p className={`${className} w-2`}>{label}</p>;
+};
+Label.defaultProps = {
+  className: "",
 };
