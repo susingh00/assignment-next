@@ -6,7 +6,6 @@ import { series as constant, epochTime } from "../lib/utils/constant";
 import moment from "moment";
 import { apiCall } from "../lib/utils/apiCall";
 import { endpoint } from "../lib/utils/endPoints";
-import { seriesType } from "../lib/utils/types/OHLC.type";
 import { chartParser, getTimeFrame } from "../lib/utils/ohlcParser";
 import { Loader } from "../lib/component/Loader";
 export const OhlcChart = () => {
@@ -21,7 +20,7 @@ export const OhlcChart = () => {
   });
   useEffect(() => {
     fecthCandle("1h");
-    handleTimeFrame("");
+    handleTimeFrame();
   }, []);
   const fecthCandle = async (time: string) => {
     try {
@@ -33,8 +32,8 @@ export const OhlcChart = () => {
         .valueOf();
 
       const endTime = moment().utc().valueOf();
-      const { limit, timeFrame: tradeTime } = epochTime[time];
-      const path = `${endpoint.candles}:${tradeTime}:tBTCUSD/hist?start=${startTime}&end=${endTime}`;
+      const { timeFrame } = epochTime[time];
+      const path = `${endpoint.candles}:${timeFrame}:tBTCUSD/hist?start=${startTime}&end=${endTime}`;
       const res = await apiCall("GET", path);
       if (res.status === 200) {
         let timeStamp: number,
@@ -64,11 +63,10 @@ export const OhlcChart = () => {
     }
   };
 
-  const handleTimeFrame = (time: string) => {
+  const handleTimeFrame = () => {
     let msg = {
       event: "subscribe",
       channel: "candles",
-      // key: `trade:${time}:tBTCUSD`,
       key: `trade:1m:tBTCUSD`,
     };
     ws.sendJsonMessage(msg);
