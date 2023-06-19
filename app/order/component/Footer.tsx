@@ -4,7 +4,14 @@ import React from "react";
 export default function Footer() {
   return (
     <div className="flex justify-between px-2">
-      <button className="px-2">
+      <button
+        className="px-2"
+        onClick={() => {
+          const strWindowFeatures =
+            "location=yes,height=670,width=920,scrollbars=yes,status=yes";
+          window.open(window.location.href, "_blank", strWindowFeatures);
+        }}
+      >
         <i className="fa fa-window-restore fa-fw text-blue-400"></i>
       </button>
       <div className="flex px-2">
