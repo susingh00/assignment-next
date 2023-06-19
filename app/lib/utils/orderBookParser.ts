@@ -61,13 +61,13 @@ export const orderBookParser = (
       }
     }
   } else if (values[orderBook.COUNT] === 0) {
-    if (values[orderBook.AMOUNT] === -1) {
+    if (values[orderBook.AMOUNT] === 1) {
       let remove_bids = [...bids];
       let filter_bids = remove_bids.filter(
         (bid) => bid.price !== values[orderBook.PRICE]
       );
       setBids([...filter_bids]);
-    } else if (values[orderBook.AMOUNT] === 1) {
+    } else if (values[orderBook.AMOUNT] === -1) {
       let remove_asks = [...asks];
       let filter_asks = remove_asks.filter(
         (ask) => ask.price !== values[orderBook.PRICE]

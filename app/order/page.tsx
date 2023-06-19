@@ -21,7 +21,6 @@ const BookOrder = () => {
         if (values.length === 3) {
           orderBookParser(values, bids, asks, setBids, setAsks);
         } else if (values.length > 3) {
-          console.log("values: ", values);
           values.forEach((value: number[]) => {
             orderBookParser(value, bids, asks, setBids, setAsks);
           });
