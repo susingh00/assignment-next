@@ -22,6 +22,7 @@ export function OHLC(props: OHLCType) {
       <div className="p-2">
         <div className="px-2">
           <IndicatorBar time={props.timeFrame} />
+
           <PriceAction currentPrice={currentPrice} />
         </div>
         <div className="flex">

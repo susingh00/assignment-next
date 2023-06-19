@@ -20,6 +20,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
           referrerPolicy="no-referrer"
         />
+        <title>Chart</title>
       </head>
       <body className={"bg-sky-950 text-white"}>{children}</body>
     </html>
