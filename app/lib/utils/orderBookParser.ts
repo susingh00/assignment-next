@@ -9,6 +9,22 @@ export const orderBookParser = (
   setBids: Dispatch<SetStateAction<BookOrderType[]>>,
   setAsks: Dispatch<SetStateAction<BookOrderType[]>>
 ) => {
+  if (values.length === 3) {
+    Parser(values, bids, asks, setBids, setAsks);
+  } else if (values.length > 3) {
+    values.forEach((value: any) => {
+      Parser(value, bids, asks, setBids, setAsks);
+    });
+  }
+};
+
+const Parser = (
+  values: number[],
+  bids: BookOrderType[],
+  asks: BookOrderType[],
+  setBids: Dispatch<SetStateAction<BookOrderType[]>>,
+  setAsks: Dispatch<SetStateAction<BookOrderType[]>>
+) => {
   if (values[ORDER_BOOK.COUNT] > 0) {
     if (values[ORDER_BOOK.AMOUNT] > 0) {
       updateBids(values, bids, setBids);

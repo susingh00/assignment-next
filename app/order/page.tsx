@@ -17,13 +17,7 @@ const BookOrder = () => {
       if (ws.lastJsonMessage?.length === 2) {
         let eventData: any = ws.lastJsonMessage;
         const values: [] | any = eventData[ORDER_BOOK.DATA];
-        if (values.length === 3) {
-          orderBookParser(values, bids, asks, setBids, setAsks);
-        } else if (values.length > 3) {
-          values.forEach((value: number[]) => {
-            orderBookParser(value, bids, asks, setBids, setAsks);
-          });
-        }
+        orderBookParser(values, bids, asks, setBids, setAsks);
       }
     },
   });
