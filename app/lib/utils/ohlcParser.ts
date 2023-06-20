@@ -1,5 +1,5 @@
 import { subtractTimeType } from "./types/constant.type";
-import { series as constant, epochTime } from "./constant";
+import { series as constant, EPOCH_TIME } from "./constant";
 import { seriesType } from "./types/OHLC.type";
 export const getTimeFrame = (time: string) => {
   let timeFrame: subtractTimeType = { num: 1, time: "hour" };

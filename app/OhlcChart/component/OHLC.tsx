@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import { Chart } from "../../lib/component/Chart";
 import moment from "moment";
 import { routes } from "../../lib/utils/routes";
-import { epochTime, series } from "../../lib/utils/constant";
-import { OHLCType, fecthCandle } from "../../lib/utils/types/OHLC.type";
+import { series } from "../../lib/utils/constant";
+import { OHLCType, fetchCandle } from "../../lib/utils/types/OHLC.type";
 import Link from "next/link";
 import Tools from "@/app/lib/component/Tools";
-import { CandlePrice } from "@/app/lib/component/CandlePrice";
 import { IndicatorBar } from "@/app/lib/component/IndicatorBar";
+import { PriceAction } from "@/app/lib/component/PriceAction";
+import { TimeRange } from "@/app/lib/component/TimeRange";
 
 export function OHLC(props: OHLCType) {
   const [currentPrice, setcurrentPrice] = useState<Array<number>>(
@@ -40,7 +41,7 @@ export function OHLC(props: OHLCType) {
             <Chart series={props.series} />
 
             <Footer
-              fecthCandle={props.fecthCandle}
+              fetchCandle={props.fetchCandle}
               timeFrame={props.timeFrame}
             />
           </div>
@@ -49,52 +50,17 @@ export function OHLC(props: OHLCType) {
     </div>
   );
 }
-const PriceAction = ({ currentPrice }: { currentPrice: number[] }) => {
-  return (
-    <div>
-      <h5>
-        BTC/USD 30 Bitfinex
-        <CandlePrice label={"O"} currentPrice={currentPrice[series.OPEN]} />
-        <CandlePrice label={"H"} currentPrice={currentPrice[series.HIGH]} />
-        <CandlePrice label={"L"} currentPrice={currentPrice[series.LOW]} />
-        <CandlePrice label={"C"} currentPrice={currentPrice[series.CLOSE]} />
-      </h5>
-    </div>
-  );
-};
-const TimeRange = ({
-  fecthCandle,
-  timeFrame,
-}: {
-  fecthCandle: fecthCandle;
-  timeFrame: string;
-}) => {
-  return (
-    <div>
-      {Object.keys(epochTime).map((time, index) => (
-        <button className="p-2" onClick={() => fecthCandle(time)} key={index}>
-          <p
-            className={`text-sm ${
-              timeFrame === time ? "text-white" : "text-gray-400"
-            }`}
-          >
-            {time}
-          </p>
-        </button>
-      ))}
-    </div>
-  );
-};
+
 const Footer = ({
-  fecthCandle,
+  fetchCandle,
   timeFrame,
 }: {
-  fecthCandle: fecthCandle;
+  fetchCandle: fetchCandle;
   timeFrame: string;
 }) => {
   return (
     <div className="flex justify-between items-center flex-wrap">
-      <TimeRange fecthCandle={fecthCandle} timeFrame={timeFrame} />
+      <TimeRange fetchCandle={fetchCandle} currentTime={timeFrame} />
       <div className="flex">
         <p className="text-sm text-gray-400">
           {moment().utc().format("hh:mm:ss (UTC)")}
@@ -122,7 +88,7 @@ const Header = () => {
           SHOW LIQUIDATIONS
         </p>
         <i className="fa-solid fa-arrows-rotate text-gray-200 ms-2 text-sm"></i>
-        <Link className="mx-2 border-2 px-2 rounded" href={routes.orderBook}>
+        <Link className="mx-2 border-2 px-2 rounded" href={routes.ORDER_BOOK}>
           Book Order&apos;s
         </Link>
       </div>

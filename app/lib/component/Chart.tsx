@@ -1,10 +1,9 @@
 import dynamic from "next/dynamic";
 import { ChartType } from "../utils/types/Chart.type";
-import { ohlc } from "../utils/constant";
+import { OHLC } from "../utils/constant";
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
-// import ReactApexChart from "react-apexcharts";
 export const Chart = (props: ChartType) => {
   return (
     <div style={{ height: "80vh" }}>
@@ -49,16 +48,31 @@ Chart.defaultProps = {
           if (elements) {
             let childNodes = elements.childNodes;
             if (childNodes.length) {
-              const open = childNodes[ohlc.open].textContent?.split(": ")[1];
-              const high = childNodes[ohlc.high].textContent?.split(": ")[1];
-              const low = childNodes[ohlc.low].textContent?.split(": ")[1];
-              const close = childNodes[ohlc.close].textContent?.split(": ")[1];
+              const open =
+                childNodes[OHLC.open].textContent?.split(": ")[1] ?? "";
+              const high =
+                childNodes[OHLC.high].textContent?.split(": ")[1] ?? "";
+              const low =
+                childNodes[OHLC.low].textContent?.split(": ")[1] ?? "";
+              const close =
+                childNodes[OHLC.close].textContent?.split(": ")[1] ?? "";
               const ids = document.querySelectorAll("#price-action");
               if (ids.length) {
-                ids[ohlc.open].innerHTML = open ?? "";
-                ids[ohlc.high].innerHTML = high ?? "";
-                ids[ohlc.low].innerHTML = low ?? "";
-                ids[ohlc.close].innerHTML = close ?? "";
+                ids[OHLC.open].innerHTML = open;
+                ids[OHLC.high].innerHTML = high;
+                ids[OHLC.low].innerHTML = low;
+                ids[OHLC.close].innerHTML = close;
+                if (open <= close) {
+                  ids.forEach((id) => {
+                    id.classList.remove("text-red-400");
+                    id.classList.add("text-green-400");
+                  });
+                } else if (open > close) {
+                  ids.forEach((id) => {
+                    id.classList.remove("text-green-400");
+                    id.classList.add("text-red-400");
+                  });
+                }
               }
             }
           }

@@ -1,6 +1,6 @@
 import { epochTimeType } from "./types/constant.type";
 
-export const orderBook = {
+export const ORDER_BOOK = {
   PRICE: 0,
   COUNT: 1,
   AMOUNT: 2,
@@ -14,7 +14,7 @@ export const series = {
   HIGH: 2,
   LOW: 3,
 };
-export const epochTime: epochTimeType = {
+export const EPOCH_TIME: epochTimeType = {
   "1h": {
     timeFrame: "1m",
     limit: 330,
@@ -52,7 +52,7 @@ export const epochTime: epochTimeType = {
     limit: 330,
   },
 };
-export const ohlc = {
+export const OHLC = {
   open: 0,
   high: 1,
   low: 2,

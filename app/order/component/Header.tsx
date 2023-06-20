@@ -6,7 +6,7 @@ export default function Header() {
   return (
     <div className="p-2 flex flex-row justify-between items-center border-b-2 border-gray-500">
       <div className="flex">
-        <Link className="mx-2" href={routes.ohlc}>
+        <Link className="mx-2" href={routes.OHLC}>
           <i className="fa-solid fa-circle-chevron-left text-xl"></i>
         </Link>
         <h2>

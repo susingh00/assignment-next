@@ -1,11 +1,11 @@
 import React from "react";
-import { epochTime } from "../utils/constant";
+import { EPOCH_TIME } from "../utils/constant";
 
 export function IndicatorBar({ time }: { time: string }) {
   return (
     <div className="flex">
       <button className="p-2">
-        <p className="text-sm text-gray-400">{epochTime[time].timeFrame}</p>
+        <p className="text-sm text-gray-400">{EPOCH_TIME[time].timeFrame}</p>
       </button>
       <button className="p-2">
         <span className="text-sm text-gray-400">
