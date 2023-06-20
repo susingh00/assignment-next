@@ -1,10 +1,10 @@
-export interface BookOrderType {
+export interface OrderBookType {
   price: number;
   total: number;
   amount: number;
   count: number;
 }
 export interface BookOrderPropsType {
-  bids: BookOrderType[];
-  asks: BookOrderType[];
+  bids: OrderBookType[];
+  asks: OrderBookType[];
 }

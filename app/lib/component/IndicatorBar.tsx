@@ -24,7 +24,7 @@ export function IndicatorBar({ time }: { time: string }) {
         </span>
       </button>
       <button className="p-2">
-        <p className="text-sm  text-gray-400">Indicators</p>{" "}
+        <p className="text-sm  text-gray-400">Indicators</p>
       </button>
     </div>
   );

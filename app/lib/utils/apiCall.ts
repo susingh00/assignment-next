@@ -8,7 +8,7 @@ export const apiCall = async (
   try {
     const res = await axios({
       method,
-      url: baseURL + endpoint,
+      url: `${baseURL}${endpoint}`,
       data: params,
     });
     if (res.status === 200) {

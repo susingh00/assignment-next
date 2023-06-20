@@ -4,12 +4,12 @@ import { OHLC } from "../utils/constant";
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
-export const Chart = (props: ChartType) => {
+export const CandleChart = (props: ChartType) => {
   return (
     <div style={{ height: "80vh" }}>
       <ReactApexChart
         options={props.options}
-        series={[{ data: props.series }]}
+        series={[{ data: props.series as [] }]}
         type={props.type}
         height={"100%"}
         width={"100%"}
@@ -17,7 +17,7 @@ export const Chart = (props: ChartType) => {
     </div>
   );
 };
-Chart.defaultProps = {
+CandleChart.defaultProps = {
   type: "candlestick",
   options: {
     chart: {

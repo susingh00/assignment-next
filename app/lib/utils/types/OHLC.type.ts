@@ -1,7 +1,9 @@
-export type seriesType = number[] | any;
-export type fetchCandle = (time: string) => Promise<void>;
+import { Dispatch, SetStateAction } from "react";
+
+export type CandleSeriesType = (number | number[])[][];
+export type setTimeFrame = Dispatch<SetStateAction<string>>;
 export interface OHLCType {
-  series: seriesType;
+  series: CandleSeriesType;
   timeFrame: string;
-  fetchCandle: fetchCandle;
+  setTimeFrame: setTimeFrame;
 }

@@ -1,8 +1,6 @@
-import { subtractTimeType } from "./types/constant.type";
-import { series as constant, EPOCH_TIME } from "./constant";
-import { seriesType } from "./types/OHLC.type";
+import { SubtractTimeType } from "./types/constant.type";
 export const getTimeFrame = (time: string) => {
-  let timeFrame: subtractTimeType = { num: 1, time: "hour" };
+  let timeFrame: SubtractTimeType = { num: 1, time: "hour" };
   switch (time) {
     case "6h":
       timeFrame.num = 6;
@@ -38,18 +36,9 @@ export const getTimeFrame = (time: string) => {
   }
   return timeFrame;
 };
-export const chartParser = (data: [] | any, timeStamp: number) => {
-  let mappedArr: seriesType = [];
-  timeStamp = data[constant.MTS];
-  mappedArr = [];
-  mappedArr.push(timeStamp);
-  let value = data.slice(1, 5);
-  const high = value[constant.HIGH];
-  const low = value[constant.LOW];
-  const close = value[constant.CLOSE];
-  value[constant.CLOSE] = high;
-  value[constant.HIGH] = low;
-  value[constant.LOW] = close;
-  mappedArr.push(value);
-  return mappedArr;
+export const candleParser = (data: number[][]) => {
+  return data.map((unParseData: number[]) => {
+    const [timeStamp, open, close, high, low] = unParseData;
+    return [timeStamp, [open, high, low, close]];
+  });
 };

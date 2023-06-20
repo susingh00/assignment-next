@@ -1,17 +1,17 @@
 import { EPOCH_TIME } from "../utils/constant";
-import { fetchCandle } from "../utils/types/OHLC.type";
+import { setTimeFrame } from "../utils/types/OHLC.type";
 
 export const TimeRange = ({
-  fetchCandle,
+  setTimeFrame,
   currentTime,
 }: {
-  fetchCandle: fetchCandle;
+  setTimeFrame: setTimeFrame;
   currentTime: string;
 }) => {
   return (
     <div>
       {Object.keys(EPOCH_TIME).map((time, index) => (
-        <button className="p-2" onClick={() => fetchCandle(time)} key={index}>
+        <button className="p-2" onClick={() => setTimeFrame(time)} key={index}>
           <p
             className={`text-sm ${
               currentTime === time ? "text-white" : "text-gray-400"

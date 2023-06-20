@@ -1,13 +1,13 @@
 import { Dispatch, SetStateAction } from "react";
 import { ORDER_BOOK } from "./constant";
-import { BookOrderType } from "./types/BookOrder.types";
+import { OrderBookType } from "./types/BookOrder.types";
 
 export const orderBookParser = (
   values: number[],
-  bids: BookOrderType[],
-  asks: BookOrderType[],
-  setBids: Dispatch<SetStateAction<BookOrderType[]>>,
-  setAsks: Dispatch<SetStateAction<BookOrderType[]>>
+  bids: OrderBookType[],
+  asks: OrderBookType[],
+  setBids: Dispatch<SetStateAction<OrderBookType[]>>,
+  setAsks: Dispatch<SetStateAction<OrderBookType[]>>
 ) => {
   if (values.length === 3) {
     Parser(values, bids, asks, setBids, setAsks);
@@ -20,10 +20,10 @@ export const orderBookParser = (
 
 const Parser = (
   values: number[],
-  bids: BookOrderType[],
-  asks: BookOrderType[],
-  setBids: Dispatch<SetStateAction<BookOrderType[]>>,
-  setAsks: Dispatch<SetStateAction<BookOrderType[]>>
+  bids: OrderBookType[],
+  asks: OrderBookType[],
+  setBids: Dispatch<SetStateAction<OrderBookType[]>>,
+  setAsks: Dispatch<SetStateAction<OrderBookType[]>>
 ) => {
   if (values[ORDER_BOOK.COUNT] > 0) {
     if (values[ORDER_BOOK.AMOUNT] > 0) {
@@ -50,20 +50,20 @@ const Parser = (
 
 const updateBids = (
   values: number[],
-  bids: BookOrderType[],
-  setBids: Dispatch<SetStateAction<BookOrderType[]>>
+  bids: OrderBookType[],
+  setBids: Dispatch<SetStateAction<OrderBookType[]>>
 ) => {
-  const bid_payload: BookOrderType = {
+  const bid_payload: OrderBookType = {
     count: values[ORDER_BOOK.COUNT],
     amount: Number(values[ORDER_BOOK.AMOUNT].toFixed(4)),
     price: values[ORDER_BOOK.PRICE],
     total: Number(values[ORDER_BOOK.AMOUNT].toFixed(4)),
   };
-  let updated_bids: BookOrderType[] = [];
+  let updated_bids: OrderBookType[] = [];
   if (bids.length) {
     let _bids = [...bids];
     let total_bid = 0;
-    _bids.forEach((bid: BookOrderType) => {
+    _bids.forEach((bid: OrderBookType) => {
       total_bid += Number(bid.amount);
       if (bid.price === bid_payload.price) {
         updated_bids.push(bid_payload);
@@ -81,8 +81,8 @@ const updateBids = (
 
 const updateAsks = (
   values: number[],
-  asks: BookOrderType[],
-  setAsks: Dispatch<SetStateAction<BookOrderType[]>>
+  asks: OrderBookType[],
+  setAsks: Dispatch<SetStateAction<OrderBookType[]>>
 ) => {
   const ask_payload = {
     count: values[ORDER_BOOK.COUNT],
@@ -90,7 +90,7 @@ const updateAsks = (
     price: values[ORDER_BOOK.PRICE],
     total: Math.abs(Number(values[ORDER_BOOK.AMOUNT].toFixed(4))),
   };
-  let updated_asks: BookOrderType[] = [];
+  let updated_asks: OrderBookType[] = [];
   if (asks.length) {
     let _asks = [...asks];
     let total_bid = 0;

@@ -1,13 +1,13 @@
 import { DurationInputArg1, DurationInputArg2 } from "moment";
 
-interface tradeTime {
+interface TradeTime {
   timeFrame: string;
   limit: number;
 }
-export interface epochTimeType {
-  [name: string]: tradeTime;
+export interface EpochTimeType {
+  [name: string]: TradeTime;
 }
-export interface subtractTimeType {
+export interface SubtractTimeType {
   num: DurationInputArg1;
   time: DurationInputArg2;
 }

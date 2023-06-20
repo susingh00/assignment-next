@@ -1,36 +1,26 @@
 import { useEffect, useState } from "react";
-import { OHLC } from "./component/OHLC";
-import { series as constant } from "../lib/utils/constant";
-import { chartParser } from "../lib/utils/ohlcParser";
+import { OhlcCompoent } from "./component/OhlcComponent";
+import { candleParser } from "../lib/utils/ohlcParser";
 import { Loader } from "../lib/component/Loader";
 import { candleService } from "./service/Candle";
+import { CandleSeriesType } from "../lib/utils/types/OHLC.type";
 
-export const OhlcChart = () => {
-  const oneHr = "1h";
-  const [series, setSeries] = useState<number[]>([]);
-  const [timeFrame, setTimeFrame] = useState(oneHr);
+const ONE_HOUR = "1h";
+
+export const OhlcPage = () => {
+  const [series, setSeries] = useState<CandleSeriesType>([]);
+  const [timeFrame, setTimeFrame] = useState(ONE_HOUR);
 
   useEffect(() => {
-    fetchCandle(oneHr);
-  }, []);
-  useEffect(() => {
-    if (timeFrame === oneHr) {
-      setInterval(() => fetchCandle(oneHr), 100000);
-    }
-  });
+    fetchCandle(timeFrame);
+  }, [timeFrame]);
 
   const fetchCandle = async (time: string) => {
-    setTimeFrame(time);
-
     const { data, error } = await candleService(time);
 
     if (data) {
-      const final = data.map((item: number[]) => {
-        const timeStamp = item[constant.MTS];
-        const mappedData = chartParser(item, timeStamp);
-        return mappedData;
-      });
-      setSeries([...final]);
+      const candleData = candleParser(data);
+      setSeries([...candleData]);
     } else {
       alert(error);
       console.log("error: ", error);
@@ -38,7 +28,11 @@ export const OhlcChart = () => {
   };
 
   return series.length ? (
-    <OHLC series={series} fetchCandle={fetchCandle} timeFrame={timeFrame} />
+    <OhlcCompoent
+      series={series}
+      setTimeFrame={setTimeFrame}
+      timeFrame={timeFrame}
+    />
   ) : (
     <Loader />
   );
