@@ -1,4 +1,4 @@
-import { seriesType } from "./OHLC.type";
+import { CandleSeriesType } from "./OHLC.type";
 
 export interface ChartType {
   type:
@@ -20,5 +20,5 @@ export interface ChartType {
     | "rangeBar"
     | undefined;
   options: Object;
-  series: seriesType;
+  series: CandleSeriesType;
 }

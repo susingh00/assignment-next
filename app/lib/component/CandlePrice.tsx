@@ -1,6 +1,4 @@
 import React from "react";
-import { series } from "../utils/constant";
-
 export function CandlePrice({
   currentPrice,
   label,

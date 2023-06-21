@@ -1,20 +1,20 @@
-import { epochTimeType } from "./types/constant.type";
+import { EpochTimeType } from "./types/constant.type";
 
-export const orderBook = {
+export const ORDER_BOOK = {
   PRICE: 0,
   COUNT: 1,
   AMOUNT: 2,
-  DATA: 1,
+  DATA_INDEX: 1,
 };
-export const series = {
-  DATA: 1,
+export const CANDLE_SERIES = {
+  DATA_INDEX: 1,
   MTS: 0,
   OPEN: 0,
   CLOSE: 1,
   HIGH: 2,
   LOW: 3,
 };
-export const epochTime: epochTimeType = {
+export const EPOCH_TIME: EpochTimeType = {
   "1h": {
     timeFrame: "1m",
     limit: 330,
@@ -52,7 +52,7 @@ export const epochTime: epochTimeType = {
     limit: 330,
   },
 };
-export const ohlc = {
+export const OHLC = {
   open: 0,
   high: 1,
   low: 2,

@@ -1,11 +1,12 @@
 import {
-  BookOrderPropsType,
-  BookOrderType,
+  OrderBookPropsType,
+  OrderBookType,
 } from "../../lib/utils/types/BookOrder.types";
 import Header from "./Header";
 import Footer from "./Footer";
+import { Label } from "@/app/lib/component/Label";
 
-export const Order = (props: BookOrderPropsType) => {
+export const Order = (props: OrderBookPropsType) => {
   return (
     <div>
       <Header />
@@ -18,7 +19,7 @@ export const Order = (props: BookOrderPropsType) => {
             <Label className="text-gray-400" label="TOTAL" />
             <Label className="text-gray-400" label="PRICE" />
           </div>
-          {props.bids.map((bid: BookOrderType, index: number) => (
+          {props.bids.map((bid: OrderBookType, index: number) => (
             <div
               className="flex justify-evenly relative"
               key={index}
@@ -42,7 +43,7 @@ export const Order = (props: BookOrderPropsType) => {
             <Label className="text-gray-400" label="AMOUNT" />
             <Label className="text-gray-400" label="COUNT" />
           </div>
-          {props.asks.map((ask: BookOrderType, index: number) => (
+          {props.asks.map((ask: OrderBookType, index: number) => (
             <div
               className="flex justify-evenly relative"
               key={index}
@@ -64,16 +65,4 @@ export const Order = (props: BookOrderPropsType) => {
       <Footer />
     </div>
   );
-};
-const Label = ({
-  label,
-  className,
-}: {
-  label: string | number;
-  className: string;
-}) => {
-  return <p className={`${className} w-2`}>{label}</p>;
-};
-Label.defaultProps = {
-  className: "",
 };

@@ -1,1 +1,1 @@
-export const socket_url="wss://api-pub.bitfinex.com/ws/2"
+export const SOCKET_URL = "wss://api-pub.bitfinex.com/ws/2";

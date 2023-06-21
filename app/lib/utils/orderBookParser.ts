@@ -1,78 +1,111 @@
-import { Dispatch, SetStateAction } from "react";
-import { orderBook } from "./constant";
-import { BookOrderType } from "./types/BookOrder.types";
+import { ORDER_BOOK } from "./constant";
+import { OrderBookType } from "./types/BookOrder.types";
 
 export const orderBookParser = (
   values: number[],
-  bids: Array<BookOrderType>,
-  asks: Array<BookOrderType>,
-  setBids: Dispatch<SetStateAction<BookOrderType[]>>,
-  setAsks: Dispatch<SetStateAction<BookOrderType[]>>
+  bids: OrderBookType[],
+  asks: OrderBookType[]
 ) => {
-  if (values[orderBook.COUNT] > 0) {
-    if (values[orderBook.AMOUNT] > 0) {
-      const bid_payload: BookOrderType = {
-        count: values[orderBook.COUNT],
-        amount: Number(values[orderBook.AMOUNT].toFixed(4)),
-        price: values[orderBook.PRICE],
-        total: Number(values[orderBook.AMOUNT].toFixed(4)),
-      };
-      let updated_bids: BookOrderType[] = [];
-      if (bids.length) {
-        let _bids = [...bids];
-        let total_bid = 0;
-        _bids.forEach((bid: BookOrderType) => {
-          total_bid += Number(bid.amount);
-          if (bid.price === bid_payload.price) {
-            updated_bids.push(bid_payload);
-          } else {
-            bid.total = total_bid;
-            updated_bids.push(bid);
-          }
-        });
-        setBids([...updated_bids]);
-      } else {
-        updated_bids.push(bid_payload);
-        setBids((prev) => [...prev, bid_payload]);
-      }
+  let updatedBids: OrderBookType[] = [];
+  let updatedAsks: OrderBookType[] = [];
+
+  if (values.length === 3) {
+    parser(values, bids, asks, updatedBids, updatedAsks);
+  } else if (values.length > 3) {
+    values.forEach((value: any) => {
+      parser(value, bids, asks, updatedBids, updatedAsks);
+    });
+  }
+  return {
+    updatedBids,
+    updatedAsks,
+  };
+};
+
+const parser = (
+  values: number[],
+  bids: OrderBookType[],
+  asks: OrderBookType[],
+  updatedBids: OrderBookType[],
+  updatedAsks: OrderBookType[]
+) => {
+  if (values[ORDER_BOOK.COUNT] > 0) {
+    if (values[ORDER_BOOK.AMOUNT] > 0) {
+      bidsParser(values, bids, updatedBids);
     } else {
-      const ask_payload = {
-        count: values[orderBook.COUNT],
-        amount: Math.abs(Number(values[orderBook.AMOUNT].toFixed(4))),
-        price: values[orderBook.PRICE],
-        total: Math.abs(Number(values[orderBook.AMOUNT].toFixed(4))),
-      };
-      let updated_asks: BookOrderType[] = [];
-      if (asks.length) {
-        let _asks = [...asks];
-        let total_bid = 0;
-        _asks.forEach((ask) => {
-          total_bid += ask.amount;
-          if (ask.price === ask_payload.price) {
-            updated_asks.push(ask_payload);
-          } else {
-            ask.total = total_bid;
-            updated_asks.push(ask);
-          }
-        });
-        setAsks([...updated_asks]);
+      asksParser(values, asks, updatedAsks);
+    }
+  } else if (values[ORDER_BOOK.COUNT] === 0) {
+    if (values[ORDER_BOOK.AMOUNT] === -1) {
+      const remove_bids = [...bids];
+
+      const filter_bids = remove_bids.filter(
+        (bid) => bid.price !== values[ORDER_BOOK.PRICE]
+      );
+      updatedBids = [...filter_bids];
+    } else if (values[ORDER_BOOK.AMOUNT] === 1) {
+      const remove_asks = [...asks];
+
+      const filter_asks = remove_asks.filter(
+        (ask) => ask.price !== values[ORDER_BOOK.PRICE]
+      );
+      updatedAsks = [...filter_asks];
+    }
+  }
+};
+
+const bidsParser = (
+  values: number[],
+  bids: OrderBookType[],
+  updatedBids: OrderBookType[]
+) => {
+  const bid_payload: OrderBookType = {
+    count: values[ORDER_BOOK.COUNT],
+    amount: Number(values[ORDER_BOOK.AMOUNT].toFixed(4)),
+    price: values[ORDER_BOOK.PRICE],
+    total: Number(values[ORDER_BOOK.AMOUNT].toFixed(4)),
+  };
+  if (bids.length) {
+    let _bids = [...bids];
+    let total_bid = 0;
+    _bids.forEach((bid: OrderBookType) => {
+      total_bid += Number(bid.amount);
+      if (bid.price === bid_payload.price) {
+        updatedBids.push(bid_payload);
       } else {
-        setAsks((prev) => [...prev, ask_payload]);
+        bid.total = total_bid;
+        updatedBids.push(bid);
       }
-    }
-  } else if (values[orderBook.COUNT] === 0) {
-    if (values[orderBook.AMOUNT] === 1) {
-      let remove_bids = [...bids];
-      let filter_bids = remove_bids.filter(
-        (bid) => bid.price !== values[orderBook.PRICE]
-      );
-      setBids([...filter_bids]);
-    } else if (values[orderBook.AMOUNT] === -1) {
-      let remove_asks = [...asks];
-      let filter_asks = remove_asks.filter(
-        (ask) => ask.price !== values[orderBook.PRICE]
-      );
-      setBids([...filter_asks]);
-    }
+    });
+  } else {
+    updatedBids.push(bid_payload);
+  }
+};
+
+const asksParser = (
+  values: number[],
+  asks: OrderBookType[],
+  updatedAsks: OrderBookType[]
+) => {
+  const ask_payload = {
+    count: values[ORDER_BOOK.COUNT],
+    amount: Math.abs(Number(values[ORDER_BOOK.AMOUNT].toFixed(4))),
+    price: values[ORDER_BOOK.PRICE],
+    total: Math.abs(Number(values[ORDER_BOOK.AMOUNT].toFixed(4))),
+  };
+  if (asks.length) {
+    let _asks = [...asks];
+    let total_bid = 0;
+    _asks.forEach((ask) => {
+      total_bid += ask.amount;
+      if (ask.price === ask_payload.price) {
+        updatedAsks.push(ask_payload);
+      } else {
+        ask.total = total_bid;
+        updatedAsks.push(ask);
+      }
+    });
+  } else {
+    updatedAsks.push(ask_payload);
   }
 };

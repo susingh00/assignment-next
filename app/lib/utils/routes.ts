@@ -1,4 +1,4 @@
-export const routes={
-    ohlc:"/",
-    orderBook:"/order"
-}
+export const routes = {
+  OHLC: "/",
+  ORDER_BOOK: "/order",
+};

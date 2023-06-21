@@ -1,7 +1,7 @@
-export type seriesType = number[] | any;
-export type fecthCandle = (time: string) => Promise<void>;
+export type CandleSeriesType = (number | number[])[][];
+export type updateTimeFrame = (time: string) => void;
 export interface OHLCType {
-  series: seriesType;
+  series: CandleSeriesType;
   timeFrame: string;
-  fecthCandle: fecthCandle;
+  updateTimeFrame: updateTimeFrame;
 }
