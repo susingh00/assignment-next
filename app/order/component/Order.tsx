@@ -1,12 +1,12 @@
 import {
-  BookOrderPropsType,
+  OrderBookPropsType,
   OrderBookType,
 } from "../../lib/utils/types/BookOrder.types";
 import Header from "./Header";
 import Footer from "./Footer";
 import { Label } from "@/app/lib/component/Label";
 
-export const Order = (props: BookOrderPropsType) => {
+export const Order = (props: OrderBookPropsType) => {
   return (
     <div>
       <Header />

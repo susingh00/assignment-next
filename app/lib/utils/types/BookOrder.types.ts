@@ -4,7 +4,7 @@ export interface OrderBookType {
   amount: number;
   count: number;
 }
-export interface BookOrderPropsType {
+export interface OrderBookPropsType {
   bids: OrderBookType[];
   asks: OrderBookType[];
 }

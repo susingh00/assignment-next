@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { CandleChart } from "../../lib/component/CandleChart";
 import { CANDLE_SERIES } from "../../lib/utils/constant";
 import { OHLCType } from "../../lib/utils/types/OHLC.type";
@@ -10,9 +10,11 @@ import { OhlcChartHeader } from "./OhlcChartHeader";
 
 export function OhlcCompoent(props: OHLCType) {
   const [currentPrice, setcurrentPrice] = useState<number[]>([]);
-  useEffect(() => {
+  useMemo(() => {
     const candleSeriesLen = props.series[props.series.length - 1];
-    const candleSeriesData = candleSeriesLen[CANDLE_SERIES.DATA] as number[];
+    const candleSeriesData = candleSeriesLen[
+      CANDLE_SERIES.DATA_INDEX
+    ] as number[];
     setcurrentPrice(candleSeriesData);
   }, [props.series]);
   return (
@@ -39,7 +41,7 @@ export function OhlcCompoent(props: OHLCType) {
             <CandleChart series={props.series} />
 
             <OhlcChartFooter
-              setTimeFrame={props.setTimeFrame}
+              updateTimeFrame={props.updateTimeFrame}
               timeFrame={props.timeFrame}
             />
           </div>

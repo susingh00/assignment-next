@@ -14,11 +14,13 @@ export const OhlcPage = () => {
   useEffect(() => {
     fetchCandle(timeFrame);
   }, [timeFrame]);
-
+  const updateTimeFrame = (time: string) => {
+    setTimeFrame(time);
+  };
   const fetchCandle = async (time: string) => {
     const { data, error } = await candleService(time);
 
-    if (data) {
+    if (!error) {
       const candleData = candleParser(data);
       setSeries([...candleData]);
     } else {
@@ -30,7 +32,7 @@ export const OhlcPage = () => {
   return series.length ? (
     <OhlcCompoent
       series={series}
-      setTimeFrame={setTimeFrame}
+      updateTimeFrame={updateTimeFrame}
       timeFrame={timeFrame}
     />
   ) : (

@@ -4,10 +4,10 @@ export const ORDER_BOOK = {
   PRICE: 0,
   COUNT: 1,
   AMOUNT: 2,
-  DATA: 1,
+  DATA_INDEX: 1,
 };
 export const CANDLE_SERIES = {
-  DATA: 1,
+  DATA_INDEX: 1,
   MTS: 0,
   OPEN: 0,
   CLOSE: 1,
